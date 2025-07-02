@@ -5,27 +5,27 @@ spring:
     gateway:
       routes:
         - id: UserService
-          uri: http://userservice:8081
+          uri: ${USER_SERVICE_URL}
           predicates:
             - Path=/api/v1/user/**
 
         - id: BlogService
-          uri: http://blogservice:8082
+          uri: ${BLOG_SERVICE_URL}
           predicates:
             - Path=/api/v1/blog/**
 
-        - id: CommentService
-          uri: http://localhost:8083
-          predicates:
-            - Path=/api/v1/comment/**
-
-        - id: FriendService
-          uri: http://localhost:8084
-          predicates:
-            - Path=/api/v1/friend/**
-
+#        - id: CommentService
+#          uri: http://localhost:8083
+#          predicates:
+#            - Path=/api/v1/comment/**
+#
+#        - id: FriendService
+#          uri: http://localhost:8084
+#          predicates:
+#            - Path=/api/v1/friend/**
+#
         - id: LikeService
-          uri: http://localhost:8085
+          uri: ${LIKE_SERVICE_URL}
           predicates:
             - Path=/api/v1/like/**
       httpclient:
@@ -34,7 +34,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:5173"
+            allowedOriginPatterns: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
@@ -42,3 +42,12 @@ spring:
     web-application-type: reactive
 server:
   port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  endpoint:
+    prometheus:
+      access: unrestricted
